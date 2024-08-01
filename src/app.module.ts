@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { User } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
 import { PhotosModule } from './photos/photos.module';
+import { Photo } from './photos/entities/photo.entity';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { PhotosModule } from './photos/photos.module';
       username: process.env.PGUSER,
       password: process.env.PGPASSWORD,
       database: process.env.PGDATABASE,
-      entities: [User],
+      entities: [User, Photo],
       synchronize: true,
       logging: true,
       ssl: true,

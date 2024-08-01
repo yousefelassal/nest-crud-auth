@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from '../../users/entities/user.entity';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
 @Entity()
 export class Photo {
@@ -13,4 +14,8 @@ export class Photo {
 
   @Column()
   key: string;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  @ManyToOne((type) => User, (user) => user.photos)
+  user: User;
 }
