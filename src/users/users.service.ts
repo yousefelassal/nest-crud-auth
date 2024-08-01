@@ -25,11 +25,13 @@ export class UsersService {
     return this.usersRepository.findOneBy({ id });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return this.usersRepository.update(id, updateUserDto);
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    await this.usersRepository.update(id, updateUserDto);
+    return this.usersRepository.findOneBy({ id });
   }
 
   async remove(id: number) {
     await this.usersRepository.delete(id);
+    return { message: `User ${id} deleted successfully` };
   }
 }
