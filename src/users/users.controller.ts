@@ -13,6 +13,7 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { CreatePhotoDto } from 'src/photos/dto/create-photo.dto';
 
 @Controller('users')
 export class UsersController {
@@ -21,6 +22,14 @@ export class UsersController {
   @Post()
   create(@Body(new ValidationPipe()) createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
+  }
+
+  @Post(':id/photos')
+  async addPhotoToUser(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() createPhotoDto: CreatePhotoDto,
+  ) {
+    return this.usersService.addPhotoToUser(id, createPhotoDto);
   }
 
   @Get()

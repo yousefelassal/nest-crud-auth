@@ -1,15 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
+import { PhotosService } from 'src/photos/photos.service';
+import { CreatePhotoDto } from 'src/photos/dto/create-photo.dto';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    private photosService: PhotosService,
   ) {}
 
   create(createUserDto: CreateUserDto) {
@@ -22,7 +25,10 @@ export class UsersService {
   }
 
   async findOne(id: number): Promise<User | undefined> {
-    const user = await this.usersRepository.findOneBy({ id });
+    const user = await this.usersRepository.findOne({
+      where: { id },
+      relations: ['photos'],
+    });
     if (!user) {
       throw new Error(`User ${id} not found`);
     }
@@ -37,5 +43,17 @@ export class UsersService {
   async remove(id: number) {
     await this.usersRepository.delete(id);
     return { message: `User ${id} deleted successfully` };
+  }
+
+  async addPhotoToUser(id: number, createPhotoDto: CreatePhotoDto) {
+    const user = await this.findOne(id);
+    if (!user) {
+      throw new HttpException(`User ${id} not found`, HttpStatus.BAD_REQUEST);
+    }
+    const photo = await this.photosService.create({
+      ...createPhotoDto,
+      user,
+    });
+    return photo;
   }
 }
