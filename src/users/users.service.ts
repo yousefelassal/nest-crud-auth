@@ -45,6 +45,23 @@ export class UsersService {
     return { message: `User ${id} deleted successfully` };
   }
 
+  async getPhotos(id: number) {
+    const user = await this.findOne(id);
+    return user.photos;
+  }
+
+  async getPhoto(id: number, photoId: number) {
+    const user = await this.findOne(id);
+    const photo = await this.photosService.findOne(photoId);
+    if (photo.user.id !== user.id) {
+      throw new HttpException(
+        `User ${id} is not the owner of photo ${photoId}`,
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+    return photo;
+  }
+
   async addPhotoToUser(id: number, createPhotoDto: CreatePhotoDto) {
     const user = await this.findOne(id);
     if (!user) {

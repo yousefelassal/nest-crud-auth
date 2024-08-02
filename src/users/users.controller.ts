@@ -24,14 +24,6 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  @Post(':id/photos')
-  async addPhotoToUser(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() createPhotoDto: CreatePhotoDto,
-  ) {
-    return this.usersService.addPhotoToUser(id, createPhotoDto);
-  }
-
   @Get()
   findAll() {
     return this.usersService.findAll();
@@ -54,5 +46,26 @@ export class UsersController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
+  }
+
+  @Get(':id/photos')
+  async getPhotos(@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.getPhotos(id);
+  }
+
+  @Get(':id/photos/:photoId')
+  async getPhoto(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('photoId', ParseIntPipe) photoId: number,
+  ) {
+    return this.usersService.getPhoto(id, photoId);
+  }
+
+  @Post(':id/photos')
+  async addPhotoToUser(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() createPhotoDto: CreatePhotoDto,
+  ) {
+    return this.usersService.addPhotoToUser(id, createPhotoDto);
   }
 }
