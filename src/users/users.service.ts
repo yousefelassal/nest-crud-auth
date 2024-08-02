@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { PhotosService } from 'src/photos/photos.service';
 import { CreatePhotoDto } from 'src/photos/dto/create-photo.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -15,8 +16,16 @@ export class UsersService {
     private photosService: PhotosService,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
-    const user = this.usersRepository.create(createUserDto);
+  async create(createUserDto: CreateUserDto) {
+    const saltRounds = 10;
+    const passwordHash = await bcrypt.hash(createUserDto.password, saltRounds);
+
+    const user = this.usersRepository.create({
+      username: createUserDto.username,
+      passwordHash,
+      status: createUserDto.status,
+    });
+
     return this.usersRepository.save(user);
   }
 
