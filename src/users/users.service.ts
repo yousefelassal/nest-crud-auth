@@ -60,16 +60,16 @@ export class UsersService {
 
   async getPhotos(id: number) {
     const user = await this.findOne(id);
-    return user.photos;
+    return this.photosService.findAll(user);
   }
 
-  async getPhoto(id: number, photoId: number) {
-    const user = await this.findOne(id);
+  async getPhoto(userId: number, photoId: number) {
+    const user = await this.findOne(userId);
     const photo = await this.photosService.findOne(photoId);
     if (photo.user.id !== user.id) {
       throw new HttpException(
-        `User ${id} is not the owner of photo ${photoId}`,
-        HttpStatus.UNAUTHORIZED,
+        `Photo ${photoId} not found for user ${userId}`,
+        HttpStatus.BAD_REQUEST,
       );
     }
     return photo;

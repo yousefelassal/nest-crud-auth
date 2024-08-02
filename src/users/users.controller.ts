@@ -57,10 +57,10 @@ export class UsersController {
 
   @Get(':id/photos/:photoId')
   async getPhoto(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseIntPipe) userId: number,
     @Param('photoId', ParseIntPipe) photoId: number,
   ) {
-    return this.usersService.getPhoto(id, photoId);
+    return this.usersService.getPhoto(userId, photoId);
   }
 
   @UseGuards(AuthGuard)
