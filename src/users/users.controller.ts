@@ -9,11 +9,13 @@ import {
   ParseIntPipe,
   NotFoundException,
   ValidationPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreatePhotoDto } from 'src/photos/dto/create-photo.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('users')
 export class UsersController {
@@ -61,10 +63,11 @@ export class UsersController {
     return this.usersService.getPhoto(id, photoId);
   }
 
+  @UseGuards(AuthGuard)
   @Post(':id/photos')
   async addPhotoToUser(
     @Param('id', ParseIntPipe) id: number,
-    @Body() createPhotoDto: CreatePhotoDto,
+    @Body(new ValidationPipe()) createPhotoDto: CreatePhotoDto,
   ) {
     return this.usersService.addPhotoToUser(id, createPhotoDto);
   }
