@@ -30,7 +30,7 @@ export class UsersService {
       relations: ['photos'],
     });
     if (!user) {
-      throw new Error(`User ${id} not found`);
+      throw new HttpException(`User ${id} not found`, HttpStatus.BAD_REQUEST);
     }
     return user;
   }
