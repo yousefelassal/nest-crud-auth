@@ -3,10 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { User } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
 import { PhotosModule } from './photos/photos.module';
-import { Photo } from './photos/entities/photo.entity';
 
 @Module({
   imports: [
@@ -17,7 +15,7 @@ import { Photo } from './photos/entities/photo.entity';
       username: process.env.PGUSER,
       password: process.env.PGPASSWORD,
       database: process.env.PGDATABASE,
-      entities: [User, Photo],
+      autoLoadEntities: true,
       synchronize: true,
       logging: true,
       ssl: true,
