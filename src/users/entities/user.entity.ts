@@ -7,10 +7,10 @@ export class User {
   id: number;
 
   @Column()
-  firstName: string;
+  username: string;
 
   @Column()
-  lastName: string;
+  hashedPassword: string;
 
   @Column()
   status: string;

@@ -2,10 +2,10 @@ import { IsEnum, MinLength } from 'class-validator';
 
 export class CreateUserDto {
   @MinLength(3)
-  firstName: string;
+  username: string;
 
-  @MinLength(3)
-  lastName: string;
+  @MinLength(8)
+  password: string;
 
   @IsEnum(['active', 'inactive'], {
     message: 'Status must be either active or inactive',
