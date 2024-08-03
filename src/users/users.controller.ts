@@ -22,7 +22,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  create(@Body(new ValidationPipe()) createUserDto: CreateUserDto) {
+  signup(@Body(new ValidationPipe()) createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 
@@ -40,21 +40,25 @@ export class UsersController {
     }
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
   }
 
+  @UseGuards(AuthGuard)
   @Get(':id/photos')
   async getPhotos(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.getPhotos(id);
   }
 
+  @UseGuards(AuthGuard)
   @Get(':id/photos/:photoId')
   async getPhoto(
     @Param('id', ParseIntPipe) userId: number,
