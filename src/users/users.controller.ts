@@ -16,6 +16,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreatePhotoDto } from 'src/photos/dto/create-photo.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { IsAuthUserGuard } from './users.guard';
 
 @Controller('users')
 export class UsersController {
@@ -52,13 +53,13 @@ export class UsersController {
     return this.usersService.remove(+id);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, IsAuthUserGuard)
   @Get(':id/photos')
   async getPhotos(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.getPhotos(id);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, IsAuthUserGuard)
   @Get(':id/photos/:photoId')
   async getPhoto(
     @Param('id', ParseIntPipe) userId: number,
@@ -67,7 +68,7 @@ export class UsersController {
     return this.usersService.getPhoto(userId, photoId);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, IsAuthUserGuard)
   @Post(':id/photos')
   async addPhotoToUser(
     @Param('id', ParseIntPipe) id: number,
