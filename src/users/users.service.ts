@@ -29,8 +29,8 @@ export class UsersService {
     return this.usersRepository.save(user);
   }
 
-  findAll(): Promise<User[]> {
-    return this.usersRepository.find();
+  findAll(status?: string): Promise<User[]> {
+    return this.usersRepository.find({ where: { status } });
   }
 
   async findOne(id: number): Promise<User | undefined> {
