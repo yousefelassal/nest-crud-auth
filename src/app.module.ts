@@ -21,7 +21,9 @@ import { AuthModule } from './auth/auth.module';
       logging: true,
       ssl: true,
     }),
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     UsersModule,
     PhotosModule,
     AuthModule,
