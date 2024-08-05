@@ -17,8 +17,16 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    const saltRounds = 10;
-    const passwordHash = await bcrypt.hash(createUserDto.password, saltRounds);
+    const saltRounds = process.env.SALT_ROUNDS || 10;
+    console.log('saltRounds', saltRounds);
+
+    const passwordHash = await bcrypt.hash(createUserDto.password, +saltRounds);
+
+    console.log({
+      username: createUserDto.username,
+      passwordHash,
+      status: createUserDto.status,
+    });
 
     const user = this.usersRepository.create({
       username: createUserDto.username,

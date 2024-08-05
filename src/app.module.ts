@@ -6,9 +6,11 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { PhotosModule } from './photos/photos.module';
 import { AuthModule } from './auth/auth.module';
-
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.PGHOST,
@@ -20,9 +22,6 @@ import { AuthModule } from './auth/auth.module';
       synchronize: true,
       logging: true,
       ssl: true,
-    }),
-    ConfigModule.forRoot({
-      isGlobal: true,
     }),
     UsersModule,
     PhotosModule,
