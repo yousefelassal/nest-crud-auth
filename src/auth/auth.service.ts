@@ -11,6 +11,7 @@ export class AuthService {
   ) {}
 
   async signIn(username: string, password: string) {
+    console.log(process.env.JWT_SECRET);
     const user = await this.userService.findOneByUsername(username);
     const passwordCorrect =
       user === null ? false : await bcrypt.compare(password, user.passwordHash);
